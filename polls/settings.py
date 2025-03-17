@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-9u(@s+n!!(j*o6v@f7p%4)r&z3a^xss7pe7xqp!n81&(4ki23n
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    "accounts"
+    "accounts",
+    "store",
+    
 ]
 
 MIDDLEWARE = [
@@ -74,13 +76,22 @@ WSGI_APPLICATION = 'polls.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'books_db',
+        'USER': 'books_user',
+        'PASSWORD': 'spawn',
+        'HOST': '127.0.0.1',
+        'PORT': '5432', # default PostgreSQL port
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
