@@ -31,15 +31,15 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
     "accounts",
     "store",
-    
+    "rest_framework",
 ]
 
 MIDDLEWARE = [
@@ -83,13 +83,14 @@ WSGI_APPLICATION = 'polls.wsgi.application'
 #     }
 # }
 DATABASES = {
-        'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'books_db',
-        'USER': 'books_user',
-        'PASSWORD': 'spawn',
-        'HOST': '127.0.0.1',
-        'PORT': '5432', # default PostgreSQL port
+    "default": {
+        # "ENGINE": "django.db.backends.postgresql",
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": "books_db",
+        "USER": "books_user",
+        "PASSWORD": "spawn",
+        "HOST": "127.0.0.1",
+        "PORT": "5432",  # default PostgreSQL port
     }
 }
 
