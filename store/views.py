@@ -2,6 +2,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
+from django.shortcuts import render
 
 
 
@@ -19,3 +20,5 @@ class BookViewSet(ModelViewSet):
     filter_fields = ['price']
     search_fields = ['title','price', 'author',]
 
+def auth(request):
+    return render(request, 'oauth.html')
