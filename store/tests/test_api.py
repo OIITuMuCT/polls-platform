@@ -25,7 +25,7 @@ class BooksApiTest(APITestCase):
         serializer_data = BookSerializer([self.book_1, self.book_2, self.book_3], many=True).data
         self.assertEqual(status.HTTP_200_OK, response.status_code)
         self.assertEqual(serializer_data, response.data)
-        print(response.data)
+
 
     @skip
     def test_get_filter(self):
@@ -36,7 +36,7 @@ class BooksApiTest(APITestCase):
         serializer_data = BookSerializer([self.book_1, self.book_3], many=True).data
         self.assertEqual(status.HTTP_200_OK, response.status_code)
         self.assertEqual(serializer_data, response.data)
-        print(response.data)
+
 
     def test_get_search(self):
         """тест: получение search"""
@@ -46,7 +46,7 @@ class BooksApiTest(APITestCase):
         serializer_data = BookSerializer([self.book_1, self.book_3], many=True).data
         self.assertEqual(status.HTTP_200_OK, response.status_code)
         self.assertEqual(serializer_data, response.data)
-        print(response.data)
+
 
     def test_create(self):
         """тест: создание объекта Book"""
@@ -68,7 +68,7 @@ class BooksApiTest(APITestCase):
         self.assertEqual([data['title'], data['price'], data['author']], [book_1.title, book_1.price, book_1.author])
         self.assertEqual(self.user, Book.objects.last().owner)
         print(Book.objects.last().owner)
-        print(response.data)
+
 
     def test_update(self):
         """тест: обновление объекта Book"""
@@ -89,7 +89,6 @@ class BooksApiTest(APITestCase):
 
         self.assertEqual(status.HTTP_200_OK, response.status_code)
         self.assertEqual(575, self.book_1.price)
-        print(response.data)
 
     def test_update_not_owner(self):
         """тест: обновление объекта Book без owner"""
@@ -120,3 +119,26 @@ class BooksApiTest(APITestCase):
             }, response.data
         )
         print(response.data)
+
+    def test_update_not_owner_but_staff(self):
+        """тест: обновление объекта Book без owner"""
+        self.user2 = User.objects.create(
+            username="test_username2", is_staff=True
+        )
+        url = reverse("book-detail", args=(self.book_1.id,))
+        data = {
+            "title": self.book_1.title,
+            "price": 575,
+            "author": self.book_1.author,
+        }
+        json_data = json.dumps(data)
+        self.client.force_login(self.user2)
+        print(url)
+        response = self.client.put(url, data=json_data, content_type="application/json")
+        # self.book_1 = Book.objects.get(id=self.book_1.id)
+        self.book_1.refresh_from_db()
+
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
+        self.assertEqual(575, self.book_1.price)
+
+
