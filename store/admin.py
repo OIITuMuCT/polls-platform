@@ -8,7 +8,7 @@ from .models import Book, UserBookRelation
 @admin.register(Book)
 class BookAdmin(ModelAdmin):
     list_filter = ['title', 'price']
-    list_display= ['title', 'price', 'author']
+    list_display= ['title', 'price', 'author', "owner"]
 
 @admin.register(UserBookRelation)
 class UserBookRelationAdmin(ModelAdmin):
