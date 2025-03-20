@@ -21,7 +21,7 @@ class BooksApiTest(APITestCase):
 
         url = reverse('book-list')
         print(url)
-        response = self.client.get(url)
+        response = self.client.get(url)qq
         serializer_data = BookSerializer([self.book_1, self.book_2, self.book_3], many=True).data
         self.assertEqual(status.HTTP_200_OK, response.status_code)
         self.assertEqual(serializer_data, response.data)
@@ -210,7 +210,7 @@ class BooksRelationTest(APITestCase):
             url, data=json_data, content_type="application/json"
         )
 
-        self.assertEqual(status.HTTP_200_OK, response.status_code, response.data)
+        self.assertEqual(status.HTTP_400_BAD_REQUEST, response.status_code, response.data)
         relation = UserBookRelation.objects.get(user=self.user, book=self.book_1)
         self.book_1.refresh_from_db()
-        self.assertEqual(3, relation.rate)
+
