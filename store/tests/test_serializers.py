@@ -2,6 +2,8 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 from store.serializers import BookSerializer
 from store.models import Book, UserBookRelation
+from django.db.models import Count, When, Case
+
 
 
 class BooksSerializerTest(TestCase):
@@ -16,26 +18,32 @@ class BooksSerializerTest(TestCase):
         UserBookRelation.objects.create(user=user1, book=book_1, like=True)
         UserBookRelation.objects.create(user=user2, book=book_1, like=True)
         UserBookRelation.objects.create(user=user3, book=book_1, like=True)
-        
+
         UserBookRelation.objects.create(user=user1, book=book_2, like=True)
         UserBookRelation.objects.create(user=user2, book=book_2, like=True)
         UserBookRelation.objects.create(user=user3, book=book_2, like=False)
 
-        data = BookSerializer([book_1, book_2], many=True).data
+        books = Book.objects.all().annotate(
+            annotated_likes=Count(Case(When(userbookrelation__like=True, then=1)))).order_by('id')
+        # data = BookSerializer([book_1, book_2], many=True).data
+        data = BookSerializer(books, many=True).data
+
         expected_data = [
             {
-                "id": book_1.id, 
-                "title": "Test Book 1", 
-                "price": '25.00', 
+                "id": book_1.id,
+                "title": "Test Book 1",
+                "price": "25.00",
                 "author": "Author 1",
                 "likes_count": 3,
+                "annotated_likes": 3,
             },
             {
-                "id": book_2.id, 
-                "title": "Test Book 2", 
-                "price": '55.00', 
+                "id": book_2.id,
+                "title": "Test Book 2",
+                "price": "55.00",
                 "author": "Author 2",
                 "likes_count": 2,
+                "annotated_likes": 2,
             },
         ]
         self.assertEqual(expected_data, data)
