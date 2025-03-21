@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, re_path, include
 from rest_framework.routers import SimpleRouter
 from store.views import BookViewSet, UserBooksRelationView
+from debug_toolbar.toolbar import debug_toolbar_urls
 from store.views import auth
 
 router = SimpleRouter()
@@ -30,6 +31,6 @@ urlpatterns = [
     path("", include("social_django.urls", namespace="social")),
     path('auth/', auth)
     # path("api-auth/", include("rest_framework.urls")),
-]
+] + debug_toolbar_urls()
 
 urlpatterns += router.urls
