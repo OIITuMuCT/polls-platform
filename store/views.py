@@ -4,6 +4,7 @@ from rest_framework.filters import SearchFilter
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.mixins import UpdateModelMixin
 from rest_framework.permissions import IsAuthenticated
+from django.db.models import Case, Count, When
 
 from store.permissions import IsOwnerOrStaffOrReadOnly
 from store.models import Book, UserBookRelation
@@ -13,7 +14,9 @@ from store.serializers import BookSerializer, UserBookRelationSerializer
 # Create your views here.
 
 class BookViewSet(ModelViewSet):
-    queryset = Book.objects.all()
+    queryset = Book.objects.all().annotate(
+        annotate_likes=Count(Case(When(userbookrelation__like=True, then=1)))
+    ).select_related('owner').prefetch_related('readers').order_by('id')
     serializer_class = BookSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter]
     permission_classes = [IsOwnerOrStaffOrReadOnly]
