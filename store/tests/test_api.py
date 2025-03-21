@@ -21,7 +21,7 @@ class BooksApiTest(APITestCase):
 
         url = reverse('book-list')
         print(url)
-        response = self.client.get(url)qq
+        response = self.client.get(url)
         serializer_data = BookSerializer([self.book_1, self.book_2, self.book_3], many=True).data
         self.assertEqual(status.HTTP_200_OK, response.status_code)
         self.assertEqual(serializer_data, response.data)
