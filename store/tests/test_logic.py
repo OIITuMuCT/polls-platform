@@ -1,4 +1,3 @@
-
 from django.test import TestCase
 from django.contrib.auth.models import User
 
@@ -8,9 +7,15 @@ from store.logic import set_rating
 class SetRatingTest(TestCase):
     """ тест: проверка рейтинга"""
     def setUp(self):
-        user1 = User.objects.create(username='user1')
-        user2 = User.objects.create(username="user2")
-        user3 = User.objects.create(username='user3')
+        user1 = User.objects.create(
+            username="user1", first_name="Ivan", last_name="Petrov"
+        )
+        user2 = User.objects.create(
+            username="user2", first_name="Ivan", last_name="Ivanov"
+        )
+        user3 = User.objects.create(
+            username="user3", first_name="Alex", last_name="Petrov"
+        )
 
         self.book_1 = Book.objects.create(title="Test Book 1", price=25,
                                         author='Author 1', owner=user1)
@@ -23,4 +28,3 @@ class SetRatingTest(TestCase):
         set_rating(self.book_1)
         self.book_1.refresh_from_db()
         self.assertEqual('4.67', str(self.book_1.rating))
-

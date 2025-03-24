@@ -4,7 +4,7 @@ from rest_framework.filters import SearchFilter
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.mixins import UpdateModelMixin
 from rest_framework.permissions import IsAuthenticated
-from django.db.models import Case, Count, When
+from django.db.models import Case, Count, When, Avg
 
 from store.permissions import IsOwnerOrStaffOrReadOnly
 from store.models import Book, UserBookRelation
@@ -22,6 +22,7 @@ class BookViewSet(ModelViewSet):
     permission_classes = [IsOwnerOrStaffOrReadOnly]
     filter_fields = ['price']
     search_fields = ['title', 'price', 'author',]
+    ordering_fields = ['price', 'author']
 
     def perform_create(self, serializer):
         serializer.validated_data['owner'] = self.request.user
