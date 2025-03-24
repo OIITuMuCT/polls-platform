@@ -28,8 +28,8 @@ class BookSerializer(ModelSerializer):
             "owner_name",
             "readers",
         )  # 'likes_count'
-    def get_likes_count(self, instance):
-        return UserBookRelation.objects.filter(book=instance, like=True).count()
+    # def get_likes_count(self, instance):
+    #     return UserBookRelation.objects.filter(book=instance, like=True).count()
 
 class UserBookRelationSerializer(ModelSerializer):
     class Meta:
