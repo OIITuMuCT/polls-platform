@@ -28,13 +28,16 @@ class UserBookRelation(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     like = models.BooleanField(default=False)
     in_bookmarks = models.BooleanField(default=False)
-    rate = models.PositiveSmallIntegerField(choices=RATE_CHOICES, null=True)
+    rate = models.PositiveSmallIntegerField(choices=RATE_CHOICES, null=True, default=False)
 
     def __str__(self):
         return f'{self.user.username}: "{self.book.title}", RATE: {self.rate}'
     
     def save(self, *args, **kwargs):
         from store.logic import set_rating
-        
+        creating = not self.pk
+        old_rating = self.rate
         super().save(*args, **kwargs)
-        set_rating(self.book)
+        new_rating = self.rate
+        if old_rating != new_rating or creating:
+            set_rating(self.book)
