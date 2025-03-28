@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "django_filters",
     "social_django",
     "debug_toolbar",
+    'questionnaire',
 ]
 
 MIDDLEWARE = [
